@@ -1,0 +1,10 @@
+{
+    "chat.mcp.serverSampling": {
+        "about/.vscode/mcp.json: io.github.github/github-mcp-server": {
+            "allowedModels": [
+                "copilotcli/auto",
+                "copilot/auto"
+            ]
+        }
+    }
+}
