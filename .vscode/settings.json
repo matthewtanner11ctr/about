@@ -6,5 +6,13 @@
                 "copilot/auto"
             ]
         }
-    }
+    },
+    "github.copilot.chat.claudeAgent.allowAutoPermissions": true,
+    "github.copilot.chat.claudeAgent.useSdkExtension": true,
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.alternateGeminiModelFPrompt.enabled": true,
+    "github.copilot.chat.alternateGptPrompt.enabled": true,
+    "github.copilot.chat.completionsFetcher": "node-fetch",
+    "github.copilot.completions.chat.enabled": true,
+    "github.copilot.chat.languageContext.inline.typescript.enabled": true
 }
