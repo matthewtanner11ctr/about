@@ -1,8 +1,20 @@
-on: run-name: 
-- name: Download a Build Artifact
-  uses: actions/download-artifact@v3.1.0
-  with:
-    # Artifact name
-    name: # optional
-    # Destination path
-    path: # optional
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+run-name: Download Artifact
+
+jobs:
+  download-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.1.0
+        with:
+          name: build-artifact
+          path: ./artifacts
