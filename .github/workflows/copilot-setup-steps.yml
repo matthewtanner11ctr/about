@@ -1,20 +1,59 @@
+name: Download Artifact
+
 on:
   push:
     branches:
       - main
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_dispatch:
 
-run-name: Download Artifact
+permissions:
+  actions: read
+  contents: read
+
+env:
+  ARTIFACT_NAME: build-artifact
+  ARTIFACT_PATH: artifacts
 
 jobs:
   download-artifact:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
+    timeout-minutes: 20
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v3.1.0
         with:
-          name: build-artifact
-          path: ./artifacts
+          fetch-depth: 0
+
+      - name: Ensure artifacts directory exists (Windows)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ env.ARTIFACT_PATH }}" | Out-Null
+
+      - name: Download the build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
+
+      - name: List downloaded files (or fail if none) (Windows)
+        shell: pwsh
+        run: |
+          if (Test-Path -Path "${{ env.ARTIFACT_PATH }}" -PathType Container) {
+            $files = Get-ChildItem -Path "${{ env.ARTIFACT_PATH }}" -Force
+            if ($files.Count -gt 0) {
+              Write-Host "Downloaded files:"
+              $files | Format-Table -AutoSize
+            } else {
+              Write-Error "No artifact files found in '${{ env.ARTIFACT_PATH }}'."
+              exit 1
+            }
+          } else {
+            Write-Error "Artifact directory '${{ env.ARTIFACT_PATH }}' not found."
+            exit 1
+          }
