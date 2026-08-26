@@ -36,7 +36,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "${{ env.ARTIFACT_PATH }}" | Out-Null
 
       - name: Download the build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_PATH }}
